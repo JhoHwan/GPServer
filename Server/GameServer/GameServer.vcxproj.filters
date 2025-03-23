@@ -29,7 +29,7 @@
     </ClCompile>
     <ClCompile Include="ServerPch.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="IComponent.cpp">
+    <ClCompile Include="Component.cpp">
       <Filter>Contents\Components</Filter>
     </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
@@ -44,6 +44,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Contents\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Contents\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Contents\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,7 +80,7 @@
     </ClInclude>
     <ClInclude Include="ServerPch.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="IComponent.h">
+    <ClInclude Include="Component.h">
       <Filter>Contents\Components</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
@@ -92,6 +98,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Contents\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Contents\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Contents\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

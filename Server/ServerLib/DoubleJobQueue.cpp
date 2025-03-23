@@ -16,7 +16,7 @@ DoubleJobQueue::~DoubleJobQueue()
 
 void DoubleJobQueue::InsertJob(shared_ptr<Job> job)
 {
-	std::lock_guard<mutex> lock(_lock);
+	std::lock_guard<SpinLock> lock(_lock);
 
 	_insertJobQueue->push(job);
 }
@@ -37,7 +37,7 @@ void DoubleJobQueue::ExecuteJob()
 
 void DoubleJobQueue::SwapQueue()
 {
-	std::lock_guard<mutex> lock(_lock);
+	std::lock_guard<SpinLock> lock(_lock);
 
 	std::swap(_insertJobQueue, _executeJobQueue);
 }

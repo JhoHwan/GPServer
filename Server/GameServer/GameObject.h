@@ -2,11 +2,11 @@
 
 using GameObjectRef = std::weak_ptr<class GameObject>;
 
-class IComponent;
+class Component;
 class TransformComponent;
 
 template <typename T>
-concept ComponentType = std::is_base_of<IComponent, T>::value;
+concept ComponentType = std::is_base_of<Component, T>::value;
 
 class GameObject : enable_shared_from_this<GameObject>
 {
@@ -27,14 +27,12 @@ public:
 	std::shared_ptr<T> AddComponent(Args&&... args);
 
 private:
-	std::shared_ptr<TransformComponent> transform;
-
-private:
-	ObjectId _id;
-	std::vector<shared_ptr<IComponent>> _components;
-
-private:
 	static class IDGenerator _idGenerator;
+
+	ObjectId _id;
+	std::vector<shared_ptr<Component>> _components;
+
+	std::shared_ptr<TransformComponent> transform;
 
 };
 
@@ -43,9 +41,10 @@ inline shared_ptr<T> GameObject::GetComponent()
 {
 	for (auto& component : _components)
 	{
-		if (dynamic_pointer_cast<T>(component) != nullptr)
+		auto casted = dynamic_pointer_cast<T>(component);
+		if (casted != nullptr)
 		{
-			return dynamic_pointer_cast<T>(component);
+			return casted;
 		}
 	}
 

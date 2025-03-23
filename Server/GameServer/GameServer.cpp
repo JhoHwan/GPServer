@@ -15,12 +15,12 @@ void GameServer::InsertJob(shared_ptr<Job> job)
 	_jobQueue->InsertJob(job);
 }
 
-// ExcuteJobQueue -> GameObjectUpdate -> HandleEvent -> Braodcast
-void GameServer::GameLoop(std::chrono::milliseconds frameTime)
+// ExcuteJobQueue -> GameObjectUpdate -> Event -> Braodcast -> SwapQueue
+void GameServer::GameLoop(std::chrono::milliseconds updateInterval)
 {
 	while (true)
 	{
-		auto nextFrameTime = Time::now() + 33ms;
+		auto nextFrameTime = Time::now() + updateInterval;
 
 		_jobQueue->ExecuteJob();
 

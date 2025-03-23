@@ -12,7 +12,6 @@ using ObjectId = uint32;
 
 #include "GameObject.h"
 #include "TransformComponent.h"
-#include "IComponent.h"
 #include "DoubleJobQueue.h"
 
 #include "GameObjectManager.h"

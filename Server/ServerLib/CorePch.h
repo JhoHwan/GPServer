@@ -26,6 +26,7 @@
 
 using namespace std;
 
+#include "SpinLock.h"
 #include "SocketUtil.h"
 
 #include "RecvBuffer.h"

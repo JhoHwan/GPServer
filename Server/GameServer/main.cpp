@@ -7,13 +7,11 @@
 #include "GameServer.h"
 #include "Map.h"
 
-using Timer = std::chrono::high_resolution_clock;
+using Time = std::chrono::high_resolution_clock;
 
 int main()
 {
 	ServerPacketHandler::Init();
-
-	Map* map = new Map();
 
  	NetAddress addr(L"127.0.0.1", 7777);
 	shared_ptr<GameServer> server 
@@ -22,6 +20,5 @@ int main()
 
 	server->GameLoop(33ms);
 
-	delete map;
 	server->Stop();
 }

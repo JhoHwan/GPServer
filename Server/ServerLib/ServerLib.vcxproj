@@ -170,6 +170,7 @@
     <ClInclude Include="SendBuffer.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="SocketUtil.h" />
+    <ClInclude Include="SpinLock.h" />
     <ClInclude Include="Type.h" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +198,7 @@
     <ClCompile Include="SendBuffer.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="SocketUtil.cpp" />
+    <ClCompile Include="SpinLock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

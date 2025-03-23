@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 
-#include "IComponent.h"
+#include "Component.h"
 
 IDGenerator GameObject::_idGenerator{};
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 
-class TransformComponent : public IComponent
+class TransformComponent : public Component
 {
 public:
     TransformComponent(std::weak_ptr<GameObject> owner);

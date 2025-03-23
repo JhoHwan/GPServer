@@ -12,11 +12,8 @@ public:
 
 	void SwapQueue();
 
-    // 여기서 락 잡는 시간 측정!
-	long long SwapQueueWithTiming();
-
 private:
-	std::mutex _lock;
+	SpinLock _lock;
 
 	std::queue<shared_ptr<Job>>* _insertJobQueue;
 	std::queue<shared_ptr<Job>>* _executeJobQueue;
