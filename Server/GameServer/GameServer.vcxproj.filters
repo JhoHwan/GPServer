@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="GameServer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSession.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="IDGenerator.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Protobuf\Protocol.pb.cc">
+      <Filter>Packet\Protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Protobuf\Struct.pb.cc">
+      <Filter>Packet\Protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Protobuf\Enum.pb.cc">
+      <Filter>Packet\Protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="TestFlatbuffer.cpp">
+      <Filter>Packet\FlatBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPacketHandler.cpp">
+      <Filter>Packet\Protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPch.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="IComponent.cpp">
+      <Filter>Contents\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Contents\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Singleton.cpp">
+      <Filter>Contents\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Contents\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Contents\GameObject</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="GameServer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSession.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="IDGenerator.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatBuffer\Protocol_generated.h">
+      <Filter>Packet\FlatBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Protobuf\Struct.pb.h">
+      <Filter>Packet\Protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Protobuf\Protocol.pb.h">
+      <Filter>Packet\Protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Protobuf\Enum.pb.h">
+      <Filter>Packet\Protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPacketHandler.h">
+      <Filter>Packet\Protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPch.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="IComponent.h">
+      <Filter>Contents\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Contents\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Contents\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="Singleton.h">
+      <Filter>Contents\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Contents\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Contents\GameObject</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Server">
+      <UniqueIdentifier>{a209f531-ef7d-465c-bdae-d94729a402a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet">
+      <UniqueIdentifier>{97fbb1cf-f1f5-4003-8600-501ae30cccf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet\Protobuf">
+      <UniqueIdentifier>{aff50a79-f25d-4a26-a331-59e1f30be704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet\FlatBuffer">
+      <UniqueIdentifier>{ee747398-bc63-4a54-a564-270ee4aed688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet\Protobuf\Proto">
+      <UniqueIdentifier>{8b4fcfba-e48b-41dc-859e-1e96f66b942b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{40943192-3bd7-47eb-a7ac-1034a9877690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Components">
+      <UniqueIdentifier>{42f5b36a-4fba-44b0-a72d-0ca95186d749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Util">
+      <UniqueIdentifier>{a173b724-e6b8-4ccc-bbec-1d8f716cc537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\GameObject">
+      <UniqueIdentifier>{640a68e9-c390-4cd1-aa0d-8fdfe73a49c9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\PacketTool\protoc-21.12-win64\bin\Enum.proto">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+    <None Include="..\PacketTool\protoc-21.12-win64\bin\GenPackets.bat">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+    <None Include="..\PacketTool\protoc-21.12-win64\bin\Protocol.proto">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+    <None Include="..\PacketTool\protoc-21.12-win64\bin\Struct.proto">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+  </ItemGroup>
+</Project>

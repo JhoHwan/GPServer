@@ -1,0 +1,26 @@
+{
+  "templates": {
+    "csharp": {
+      "packet": "Template/Template-Packet.cs.jinja2",
+      "handler": "Template/Template-PacketHandler.cs.jinja2",
+      "struct": "Template/Template-Structs.cs.jinja2"
+    },
+    "cpp": {
+      "packet": "Template/Template-Packet.h.jinja2",
+      "handler": "Template/Template-PacketHandler.h.jinja2",
+      "struct": "Template/Template-Structs.h.jinja2"
+    }
+  },
+  "output": {
+    "csharp": {
+      "packet": "Packet.cs",
+      "handler": "ClientPacketHandler_Generated.cs",
+      "struct": "Structs.cs"
+    },
+    "cpp": {
+      "packet": "Packet.h",
+      "handler": "ServerPacketHandler.h",
+      "struct": "Structs.h"
+    }
+  }
+}

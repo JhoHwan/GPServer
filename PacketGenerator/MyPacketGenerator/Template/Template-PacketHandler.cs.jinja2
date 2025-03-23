@@ -1,0 +1,50 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public delegate void PacketDispatcher(ArraySegment<byte> _buffer);
+
+public abstract class {{ class_name }} : PacketHandler
+{
+    private PacketDispatcher[] _dispatcher = new PacketDispatcher[(ushort)PacketType.INVALID_PACKET];
+
+    public {{ class_name }}()
+    {
+        for (int i = 0; i < _dispatcher.Length; i++)
+        {
+            _dispatcher[i] = Dispatch_Invalid_Packet;
+        }
+
+        {% for recv in recvs %}
+        _dispatcher[(ushort)PacketType.{{ recv.packet_type }}] = Dispatch_{{ recv.packet_type }};{% endfor %}
+    }
+
+    public override bool ProcessPacket(ArraySegment<byte> _buffer)
+    {
+        PacketReader pr = new PacketReader(_buffer);
+        PacketHeader header = new PacketHeader();
+        pr.Read(ref header);
+
+        _dispatcher[(ushort)(header.type)](_buffer);
+
+        return true;
+    }
+
+    public void Dispatch_Invalid_Packet(ArraySegment<byte> _buffer)
+    {
+        Debug.LogError("Dispatch_Invalid_Packet");
+    }
+
+    {% for recv in recvs %}
+    public abstract void Dispatch_{{ recv.packet_type }}(ArraySegment<byte> _buffer);{% endfor %}
+
+    {% for send in sends %}
+    public abstract void Send_{{ send.packet_type }}({{ send.packet_type }} packet);
+    {% endfor %}
+}
+
+public abstract class PacketHandler
+{
+    public abstract bool ProcessPacket(ArraySegment<byte> _buffer);
+}

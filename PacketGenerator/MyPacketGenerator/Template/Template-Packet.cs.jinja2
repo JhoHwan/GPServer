@@ -1,0 +1,78 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using UnityEngine;
+
+public enum PacketType : ushort
+{
+    {% for packet in packets %}{{ packet.packet_type }},
+    {% endfor %}
+    INVALID_PACKET
+}
+{% for packet in packets %}
+public class {{ packet.packet_type }} : IPacket
+{
+    // 고정 길이
+    {% for field in packet.fields if not (field.string or field.list) %}public {{ field.type }} {{ field.name }};
+	{% endfor %}
+    // 문자열
+    {% for field in packet.fields if field.string %}public {{ field.type }} {{ field.name }};
+	{% endfor %}
+    // 리스트
+	{% for field in packet.fields if field.list %}public List<{{ field.type }}> {{ field.name }};
+	{% endfor %}
+    public ushort GetDataSize()
+    {
+        int size = sizeof(ushort) + sizeof(ushort);
+        
+        // 고정 길이
+        size = size {% for field in packet.fields if not (field.string or field.list) %}+ Marshal.SizeOf(typeof({{ field.type }})){% endfor %};
+        // 문자열 길이
+		{% for field in packet.fields if field.string %}size += sizeof(ushort);
+		size += {{ field.name }}.Length * sizeof(char);
+		{% endfor %}
+        // 리스트 길이
+        {% for field in packet.fields if field.list %}size += sizeof(ushort);
+		size += {{ field.name }}.Count * Marshal.SizeOf(typeof({{ field.type }}));
+		{% endfor %}
+
+        return (ushort)size;
+    }
+
+    public bool Serialize(out ArraySegment<byte> buffer)
+    {
+        PacketHeader header = new PacketHeader
+        {
+            type = PacketType.{{ packet.packet_type }},
+            size = GetDataSize()
+        };
+
+        PacketWriter pw = new PacketWriter(header.size);
+        pw.Write(header);
+        {% for field in packet.fields %}pw.Write({{ field.name }});
+        {% endfor %}
+
+        if(pw.GetSize() != header.size)
+        {
+            buffer = null; 
+            return false;
+        }
+
+        buffer = pw.GetBuffer();
+        return true;
+    }
+
+    public bool DeSerialize(ArraySegment<byte> buffer)
+    {
+        PacketHeader packetHeader = new PacketHeader();
+
+        PacketReader pr = new PacketReader(buffer);
+        
+        pr.Read(ref packetHeader);
+        {% for field in packet.fields %}pr.Read(ref {{ field.name }});
+        {% endfor %}
+        return true;
+    }
+}
+{% endfor %}

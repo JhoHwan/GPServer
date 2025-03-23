@@ -1,0 +1,178 @@
+{
+  "packets": [
+    {
+      "packet_type": "GC_SendPlayerInfo",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_CheckKeepAlive",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "packet_type": "CG_ResponseKeepAlive",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "packet_type": "CG_RequestEnterRoom",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        },
+        {
+          "name": "roomID",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_ResponseEnterRoom",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        },
+        {
+          "name": "roomID",
+          "type": "uint16"
+        },
+        {
+          "name": "bSuccess",
+          "type": "uint8"
+        },
+        {
+          "name": "roomInfo",
+          "type": "RoomInfo"
+        },
+        {
+          "name": "playerList",
+          "type": "uint16",
+          "list": true
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_ExitPlayerRoom",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "packet_type": "CG_PlayerReady",
+      "fields": [
+        {
+          "name": "roomID",
+          "type": "uint16"
+        },
+        {
+          "name": "playerID",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_ResponsePlayerReady",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_BroadCastGameStart",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "packet_type": "CG_SendDonglePool",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        },
+        {
+          "name": "roomID",
+          "type": "uint16"
+        },
+        {
+          "name": "dongleInfos",
+          "type": "DongleInfo",
+          "list": true
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_BroadCastDonglePool",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        },
+        {
+          "name": "dongleInfos",
+          "type": "DongleInfo",
+          "list": true
+        }
+      ]
+    },
+    {
+      "packet_type": "CG_MergeDongle",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        },
+        {
+          "name": "roomID",
+          "type": "uint16"
+        },
+        {
+          "name": "dongleID",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_BroadCastMergeDongle",
+      "fields": [
+        {
+          "name": "playerID",
+          "type": "uint16"
+        },
+        {
+          "name": "dongleID",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "packet_type": "GC_BroadCastGameOver",
+      "fields": [
+
+      ]
+    }
+  ]
+}

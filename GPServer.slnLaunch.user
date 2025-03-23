@@ -1,0 +1,33 @@
+[
+  {
+    "Name": "GameServer",
+    "Projects": [
+      {
+        "Path": "Server\\GameServer\\GameServer.vcxproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "Dummy Client",
+    "Projects": [
+      {
+        "Path": "DummyClient\\DummyClientCore\\DummyClientCore.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "GameServer + TestClient",
+    "Projects": [
+      {
+        "Path": "Server\\GameServer\\GameServer.vcxproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "DummyClient\\DummyClientCore\\DummyClientCore.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

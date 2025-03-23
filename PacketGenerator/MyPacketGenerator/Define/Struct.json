@@ -1,0 +1,46 @@
+{
+  "structs": [
+    {
+      "name": "RoomInfo",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint16"
+        },
+        {
+          "name": "playTime",
+          "type": "uint16"
+        },
+        {
+          "name": "maxPlayer",
+          "type": "uint16"
+        }
+      ]
+    },
+    {
+      "name": "DongleInfo",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint16"
+        },
+        {
+          "name": "level",
+          "type": "uint16"
+        },
+        {
+          "name": "x",
+          "type": "float"
+        },
+        {
+          "name": "y",
+          "type": "float"
+        },
+        {
+          "name": "rotation",
+          "type": "float"
+        }
+      ]
+    }
+  ]
+}

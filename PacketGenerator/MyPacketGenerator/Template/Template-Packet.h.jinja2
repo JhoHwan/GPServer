@@ -1,0 +1,65 @@
+#pragma once
+///////////////////////////////
+/////// AUTO-GENERATING ///////
+///////////////////////////////
+
+enum class PacketType : uint16
+{
+    {% for packet in packets %}{{ packet.packet_type }},
+	{% endfor %}
+	INVALID_PACKET,
+};
+{% for packet in packets %}
+class {{ packet.packet_type }} : public IPacket
+{
+public:
+	//고정 길이
+	{% for field in packet.fields if not (field.string or field.list) %}{{ field.type }} {{ field.name }};
+	{% endfor %}
+	//문자열
+	{% for field in packet.fields if field.string %}{{ field.type }} {{ field.name }};
+	{% endfor %}
+	//리스트
+	{% for field in packet.fields if field.list %}vector<{{ field.type }}> {{ field.name }};
+	{% endfor %}
+public:
+	uint16 GetDataSize() const override
+	{
+		size_t size = sizeof(PacketHeader);
+
+		//고정 길이 size
+		size = size {% for field in packet.fields if not (field.string or field.list) %}+ sizeof({{ field.name }}){% endfor %};
+		//문자열 size
+		{% for field in packet.fields if field.string %}size += sizeof(uint16);
+		size += {{ field.name }}.size() * sizeof(wchar);
+		{% endfor %}
+		//리스트 size
+		{% for field in packet.fields if field.list %}size += sizeof(uint16);
+		size += {{ field.name }}.size() * sizeof({{ field.type }});
+		{% endfor %}
+		return static_cast<uint16>(size);
+	}
+
+	bool Serialize(BYTE* buffer) const override
+	{
+		PacketHeader header;
+		header.packetType = PacketType::{{ packet.packet_type }};
+		header.packetSize = GetDataSize();
+
+		PacketWriter pw(buffer);
+		pw << header{% for field in packet.fields %} << {{ field.name }}{% endfor %};
+		
+		return pw.GetSize() == GetDataSize();
+	}
+
+	bool Deserialize(BYTE* buffer) override
+	{
+		PacketReader pr(buffer);
+
+		PacketHeader header;
+		pr >> header{% for field in packet.fields %} >> {{ field.name }}{% endfor %};
+
+		return GetDataSize() == header.packetSize;
+	}
+};
+{% endfor %}

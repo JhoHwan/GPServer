@@ -1,0 +1,14 @@
+#pragma once
+///////////////////////////////
+/////// AUTO-GENERATING ///////
+///////////////////////////////
+
+{% for struct in structs %}
+#pragma pack(1)
+struct {{ struct.name }}
+{
+    {% for field in struct.fields %}
+    {{ field.type }} {{ field.name }};{% endfor %}
+};
+#pragma pack()
+{% endfor %}

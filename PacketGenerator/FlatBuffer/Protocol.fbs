@@ -1,0 +1,25 @@
+namespace Flatbuffer;
+
+table S_Test
+{
+    id:uint16;
+}
+
+table S_Test2
+{
+    id:uint16;
+    name:string;
+    ids:[uint16];
+}
+
+union PacketContent {
+    S_Test,
+    S_Test2
+}
+
+table Packet
+{
+    content: PacketContent;
+}
+
+root_type Packet;

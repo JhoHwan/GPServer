@@ -1,0 +1,40 @@
+#pragma once
+///////////////////////////////
+/////// AUTO-GENERATING ///////
+///////////////////////////////
+
+using PacketDispatcher = std::function<void(BYTE*)>;
+
+class {{ class_name }} : public PacketHandler
+{
+public:
+	{{ class_name }}()
+	{
+		for (int i = 0; i < _packetDispatchers.size(); i++)
+		{
+			_packetDispatchers[i] = std::bind(&ServerPacketHandler::DispatchInvalidPacket, this);
+		}
+		{% for recv in recvs %}
+		_packetDispatchers[static_cast<uint16>(PacketType::{{ recv.packet_type }})] = std::bind(&ServerPacketHandler::Dispatch_{{ recv.packet_type }}, this, placeholders::_1);{% endfor %}
+
+	}
+	~{{ class_name }}() {}
+
+// PacketDispatcher
+public:
+	{% for recv in recvs %}void Dispatch_{{ recv.packet_type }}(BYTE* buffer);
+	{% endfor %}
+
+public:
+	{% for send in sends %}static shared_ptr<SendBuffer> Send_{{ send.packet_type }}({{ send.packet_type }}& packet);
+	{% endfor %}
+
+// PacketHandler을(를) 통해 상속됨
+public:
+	bool ReadPacket(RecvBuffer& recvBuffer, OUT uint32& packetSize) override;
+	bool ProcessPacket(BYTE* packet) override;
+
+private:
+	array<PacketDispatcher, UINT16_MAX> _packetDispatchers;
+};
+
