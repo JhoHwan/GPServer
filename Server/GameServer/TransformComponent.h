@@ -5,7 +5,7 @@ class TransformComponent : public Component
 {
 public:
     TransformComponent(std::weak_ptr<GameObject> owner);
-	virtual void Update() override {}
+	virtual void Update(float deltaTime) override {}
 
 public:
 	Vector2& Position() { return _position; }

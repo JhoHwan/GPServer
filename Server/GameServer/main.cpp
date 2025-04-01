@@ -5,6 +5,8 @@
 
 #include "Player.h"
 #include "GameServer.h"
+#include "GameObjectManager.h"
+#include "PlayerControllerComponent.h"
 #include "Map.h"
 
 using Time = std::chrono::high_resolution_clock;
@@ -16,6 +18,9 @@ int main()
  	NetAddress addr(L"127.0.0.1", 7777);
 	shared_ptr<GameServer> server 
 		= std::make_shared<GameServer>(addr, make_shared<PlayerSession>);
+
+	//auto player = GGameObjectManager()->Instantiate<Player>();
+
 	server->Start();
 
 	server->GameLoop(33ms);

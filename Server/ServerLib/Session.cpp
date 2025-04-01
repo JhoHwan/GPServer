@@ -203,6 +203,8 @@ void Session::ProcessRecv(uint32 recvBytes)
 		// 패킷 조립 성공
 		OnRecv(&buffer[processLen], header.size);
 
+		_recvBuffer.OnRead(header.size);
+
 		processLen += header.size;
 	}
 

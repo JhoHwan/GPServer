@@ -1,4 +1,4 @@
-#include <cmath>
+#include <iostream>
 
 struct Vector2
 {
@@ -62,6 +62,12 @@ struct Vector2
 		return *this - normal * 2.0 * Dot(normal);
 	}
 
+	friend std::ostream& operator<<(std::ostream& os, const Vector2& vec)
+	{
+		os << "(" << vec.x << ", " << vec.y << ")";
+		return os;
+	}
+
 	static Vector2 Lerp(const Vector2& start, const Vector2& end, double t)
 	{
 		return start * (1.0 - t) + end * t;
@@ -74,6 +80,11 @@ struct Vector2
 		double theta = acos(dot) * t;
 		Vector2 relative = (end - start * dot).Normalize();
 		return start * cos(theta) + relative * sin(theta);
+	}
+
+	static float Distance(const Vector2& a, const Vector2& b)
+	{
+		return (a - b).Length();
 	}
 
 	static Vector2 Zero() { return Vector2(0, 0); }

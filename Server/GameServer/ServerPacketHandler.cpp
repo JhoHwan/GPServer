@@ -2,17 +2,18 @@
 
 #include "ServerPacketHandler.h"
 #include "Player.h"
+#include "PlayerControllerComponent.h"
 
 using JobRef = shared_ptr<Job>;
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
-bool Handle_INVALID(SessionRef& session, BYTE* buffer, int32 len)
+bool Handle_INVALID(SessionRef session, BYTE* buffer, int32 len)
 {
     return false;
 }
 
-bool Handle_CS_ENTER_GAME(SessionRef& session, Protocol::CS_ENTER_GAME& pkt)
+bool Handle_CS_ENTER_GAME(SessionRef session, Protocol::CS_ENTER_GAME& pkt)
 {
     shared_ptr<GameServer> server = static_pointer_cast<GameServer>(session->GetServer());
     
@@ -21,6 +22,7 @@ bool Handle_CS_ENTER_GAME(SessionRef& session, Protocol::CS_ENTER_GAME& pkt)
             if (session == nullptr) return;
 
             auto playerRef = GGameObjectManager()->Instantiate<Player>();
+            playerRef.lock()->SetSession(static_pointer_cast<PlayerSession>(session));
 
             static_pointer_cast<PlayerSession>(session)->SetPlayerRef(playerRef);
 
@@ -32,12 +34,13 @@ bool Handle_CS_ENTER_GAME(SessionRef& session, Protocol::CS_ENTER_GAME& pkt)
                 pkt.set_success(true);
 
                 auto info = pkt.mutable_player();
-                playerRef.lock()->SetPlayerInfo(info);
+                playerRef.lock()->SetObjectInfo(info);
 
                 auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 
                 session->Send(sendBuffer);
             }
+
             {
                 Protocol::SC_SPAWN pkt;
 
@@ -47,44 +50,42 @@ bool Handle_CS_ENTER_GAME(SessionRef& session, Protocol::CS_ENTER_GAME& pkt)
                 {
                     auto player = playerRef.lock();
                     auto info = pkt.add_players();
-                    player->SetPlayerInfo(info);
+                    player->SetObjectInfo(info);
                 }
                 auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 
                 server->BroadCast(sendBuffer);
             }
         });
-
     server->InsertJob(job);
 
     return true;
 }
 
-bool Handle_CS_LEAVE_GAME(SessionRef& session, Protocol::CS_LEAVE_GAME& pkt)
+bool Handle_CS_LEAVE_GAME(SessionRef session, Protocol::CS_LEAVE_GAME& pkt)
 {
     return false;
 }
 
-bool Handle_CS_CHAT(SessionRef& session, Protocol::CS_CHAT& pkt)
+bool Handle_CS_CHAT(SessionRef session, Protocol::CS_CHAT& pkt)
 {
     return false;
 }
 
-bool Handle_CS_REQUEST_MOVE(SessionRef& session, Protocol::CS_REQUEST_MOVE& pkt)
+bool Handle_CS_REQUEST_MOVE(SessionRef session, Protocol::CS_REQUEST_MOVE& pkt)
 {
     shared_ptr<GameServer> server = static_pointer_cast<GameServer>(session->GetServer());
 
-    auto id = pkt.objectid();
-    uint32 x = pkt.x();
-    uint32 y = pkt.y();
+    auto id = pkt.playerid();
+    Vector2 pos{ pkt.x(), pkt.y() };
 
-    shared_ptr<Job> job = make_shared<Job>([id, x, y]()
+    shared_ptr<Job> job = make_shared<Job>([session, id, pos]()
         {
             // ÁÂÇ¥ °Ë»ç
+            auto playerRef = GGameObjectManager()->Find(id).lock();
+            if (playerRef == nullptr) return;
 
-            auto playerRef = GGameObjectManager()->Find(id);
-            if (playerRef.lock() == nullptr) return;
-
+            playerRef->GetComponent<PlayerControllerComponent>()->MoveTo(pos);
         });
 
     server->InsertJob(job);

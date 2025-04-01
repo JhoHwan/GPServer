@@ -119,7 +119,7 @@ void Grid::BuildClearance()
 	{
 		for (int j = _width - 1; j >= 0; j--)
 		{
-			if (_map[i][j] == 0) continue;
+			if (_map[i][j] == 1) continue;
 
 			if (i == _height - 1 || j == _width - 1) _clearanceMap[i][j] = 1;
 			else _clearanceMap[i][j] = min({ _clearanceMap[i + 1][j], _clearanceMap[i][j + 1], _clearanceMap[i + 1][j + 1] }) + 1;

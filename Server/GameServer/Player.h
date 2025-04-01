@@ -6,7 +6,15 @@ using PlayerRef = std::weak_ptr<class Player>;
 class Player : public GameObject
 {
 public:
+	Player();
 	virtual ~Player();
-	
-	void SetPlayerInfo(OUT Protocol::PlayerInfo* const info);
+
+	virtual void Init() override;
+
+public:
+	inline void SetSession(std::weak_ptr<class PlayerSession> sessionRef) { _sessionRef = sessionRef; }
+	inline std::weak_ptr<class PlayerSession> GetSession() { return _sessionRef; }
+
+private:
+	std::weak_ptr<class PlayerSession> _sessionRef;
 };

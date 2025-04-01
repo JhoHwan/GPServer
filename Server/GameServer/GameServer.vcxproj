@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BroadcastManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControllerComponent.cpp" />
     <ClCompile Include="QuadTree.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -187,6 +189,7 @@
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BroadcastManager.h" />
     <ClInclude Include="FlatBuffer\Protocol_generated.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="IDGenerator.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControllerComponent.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="pch.h" />

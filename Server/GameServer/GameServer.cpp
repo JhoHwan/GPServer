@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "GameServer.h"
+#include "BroadcastManager.h"
 
 using Time = std::chrono::high_resolution_clock;
 
@@ -18,20 +19,31 @@ void GameServer::InsertJob(shared_ptr<Job> job)
 // ExcuteJobQueue -> GameObjectUpdate -> Event -> Braodcast -> SwapQueue
 void GameServer::GameLoop(std::chrono::milliseconds updateInterval)
 {
+	double deltaTime = 0;
+	auto beforeTime = Time::now();
+
 	while (true)
 	{
+		_jobQueue->SwapQueue();
+
+		auto curTime = Time::now();
+		std::chrono::duration<double> dif  = (curTime - beforeTime);
+		deltaTime = dif.count();
+
+		beforeTime = curTime;
+
 		auto nextFrameTime = Time::now() + updateInterval;
 
 		_jobQueue->ExecuteJob();
 
-		::GGameObjectManager()->UpdateAll();
+		::GGameObjectManager()->UpdateAll(deltaTime);
+
+		BroadcastManager::Instance()->BroadcastAll(deltaTime);
 
 		// Busy Waiting
 		while (Time::now() < nextFrameTime)
 		{
 			std::this_thread::yield();
 		}
-
-		_jobQueue->SwapQueue();
 	}
 }

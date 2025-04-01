@@ -6,9 +6,8 @@
 
 IDGenerator GameObject::_idGenerator{};
 
-GameObject::GameObject() : _id(_idGenerator.GenerateID()), transform(make_shared<TransformComponent>(weak_from_this()))
+GameObject::GameObject() : _id(_idGenerator.GenerateID())
 {
-	_components.push_back(transform);
 }
 
 GameObject::~GameObject()
@@ -19,12 +18,25 @@ GameObject::~GameObject()
 	cout << "Destroy GameObject : " << _id << endl;
 }
 
-void GameObject::Update()
+void GameObject::Update(float deltaTime)
 {
 	//cout << "Update GameObject : " << _id << endl;
 
 	for (auto& component : _components)
 	{
-		component->Update();
+
+		component->Update(deltaTime);
 	}
+}
+
+void GameObject::SetObjectInfo(OUT Protocol::ObjectInfo* const info)
+{
+	info->set_x(Transform()->Position().x);
+	info->set_y(Transform()->Position().y);
+	info->set_objectid(GetID());
+}
+
+void GameObject::Init()
+{
+	_transform = AddComponent<TransformComponent>();
 }

@@ -42,15 +42,17 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Contents\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Contents\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>Contents\Util</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Contents\Util</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerControllerComponent.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Contents\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BroadcastManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -96,15 +98,17 @@
     <ClInclude Include="GameObject.h">
       <Filter>Contents\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Contents\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="QuadTree.h">
       <Filter>Contents\Util</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Contents\Util</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerControllerComponent.h" />
+    <ClInclude Include="Player.h">
+      <Filter>Contents\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BroadcastManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Server">
@@ -133,6 +137,9 @@
     </Filter>
     <Filter Include="Contents\GameObject">
       <UniqueIdentifier>{640a68e9-c390-4cd1-aa0d-8fdfe73a49c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\GameObject\Player">
+      <UniqueIdentifier>{173b0379-2dd5-4460-a995-8452d8bbbf9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

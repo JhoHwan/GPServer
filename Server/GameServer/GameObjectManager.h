@@ -26,6 +26,7 @@ public:
 
 	// GameObject 검색
 	GameObjectRef Find(ObjectId id);
+	unordered_map<ObjectId, shared_ptr<GameObject>>& GetAll() { return _gameObjects; }
 
 	// GameObject 검색
 	template<GameObjectType T>
@@ -35,19 +36,26 @@ public:
 	template<GameObjectType T>
 	std::vector<weak_ptr<T>> FindAllGameObjects();
 
-	void UpdateAll();
+	void UpdateAll(float deltaTime);
+
+	void AddPlayer(ObjectId id) { _playerIds.push_back(id); }
+	const vector<ObjectId>& GetPlayerIds() const { return _playerIds; }
 
 public:
 	unordered_map<ObjectId, shared_ptr<GameObject>> _gameObjects;
 	vector<ObjectId> _destroyGameObjectsIds;
+
+	vector<ObjectId> _playerIds;
 };
 
 template<GameObjectType T, typename ...Args>
 inline std::weak_ptr<T> GameObjectManager::Instantiate(Args && ...args)
 {
-	auto gameObject = make_shared<T>(std::forward<Args>(args)...);
+	shared_ptr<T> gameObject = make_shared<T>(std::forward<Args>(args)...);
 
 	_gameObjects[gameObject->GetID()] = gameObject;
+
+	gameObject->Init();
 
 	return gameObject;
 }
@@ -55,9 +63,8 @@ inline std::weak_ptr<T> GameObjectManager::Instantiate(Args && ...args)
 template<GameObjectType T, typename ...Args>
 inline std::weak_ptr<T> GameObjectManager::Instantiate(Vector2 pos, Args && ...args)
 {
-	auto gameObject = make_shared<T>(std::forward<Args>(args)...);
-	_gameObjects[gameObject->GetID()] = gameObject;
-
+	shared_ptr<GameObject> gameObject = GameObjectManager::Instantiate(std::forward<Args>()...).lock();
+	
 	gameObject->Transform()->Position() = pos;
 
 	return gameObject;

@@ -1,13 +1,23 @@
 #include "pch.h"
 #include "Player.h"
+#include "PlayerControllerComponent.h"
+
+Player::Player() : GameObject()
+{
+}
 
 Player::~Player()
 {
 }
 
-void Player::SetPlayerInfo(OUT Protocol::PlayerInfo* const info)
+void Player::Init()
 {
-	info->set_x(Transform()->Position().x);
-	info->set_y(Transform()->Position().y);
-	info->set_object_id(GetID());
+	GameObject::Init();
+
+	AddComponent<PlayerControllerComponent>();
+
+	GGameObjectManager()->AddPlayer(GetID());
 }
+
+
+

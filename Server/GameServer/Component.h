@@ -10,7 +10,7 @@ protected:
 public:
 	virtual ~Component() {}
 
-	virtual void Update() = 0;
+	virtual void Update(float deltaTime) = 0;
 
 	inline std::weak_ptr<GameObject> GetGameObject() { return _owner; }
 

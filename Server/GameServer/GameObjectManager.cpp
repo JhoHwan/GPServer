@@ -24,11 +24,11 @@ GameObjectRef GameObjectManager::Find(ObjectId id)
 	return iter->second;
 }
 
-void GameObjectManager::UpdateAll()
+void GameObjectManager::UpdateAll(float deltaTime)
 {
 	for (auto& [id, gameObject] : _gameObjects)
 	{
-		gameObject->Update();
+		gameObject->Update(deltaTime);
 	}
 
 	for (auto id : _destroyGameObjectsIds)
