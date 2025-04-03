@@ -16,11 +16,10 @@ void BroadcastManager::BroadcastMove(float deltaTime)
 {
 	if (_triggerdObjectId.size() == 0) return;
 
-	for (const auto& id : GGameObjectManager()->GetPlayerIds())
+	for (const auto& playerRef : GGameObjectManager()->GetPlayers())
 	{
-		// TODO : Player Ä³½Ì
-		auto playerRef = static_pointer_cast<Player>(GGameObjectManager()->Find(id).lock());
-		if (playerRef == nullptr) continue;
+		auto player = playerRef.lock();
+		if (player == nullptr) continue;
 
 		Protocol::SC_BROADCAST_MOVE pkt;
 
@@ -36,7 +35,7 @@ void BroadcastManager::BroadcastMove(float deltaTime)
 		
 		if (pkt.players_size() == 0) continue;
 
-		auto session = playerRef->GetSession().lock();
+		auto session = player->GetSession().lock();
 		if (session == nullptr) continue;
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);

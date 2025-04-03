@@ -94,3 +94,12 @@ struct Vector2
 	static Vector2 Left() { return Vector2(-1, 0); }
 	static Vector2 Right() { return Vector2(1, 0); }
 };
+
+template <>
+struct std::formatter<Vector2> : std::formatter<std::string> {
+	// format 함수 구현
+	auto format(const Vector2& v, format_context& ctx) const {
+		std::string s = std::format("({:.2f}, {:.2f})", v.x, v.y);
+		return std::formatter<std::string>::format(s, ctx);
+	}
+};

@@ -26,6 +26,10 @@
 
 using namespace std;
 
+#include "concurrentqueue.h"
+using namespace moodycamel;
+
+#include "ThreadPool.h"
 #include "SpinLock.h"
 #include "SocketUtil.h"
 

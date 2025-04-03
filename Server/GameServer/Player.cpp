@@ -16,7 +16,7 @@ void Player::Init()
 
 	AddComponent<PlayerControllerComponent>();
 
-	GGameObjectManager()->AddPlayer(GetID());
+	GGameObjectManager()->AddPlayer(static_pointer_cast<Player>(shared_from_this()));
 }
 
 

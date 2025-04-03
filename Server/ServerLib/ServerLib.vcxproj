@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="concurrentqueue.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="CoreGlobal.h" />
     <ClInclude Include="CorePch.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Session.h" />
     <ClInclude Include="SocketUtil.h" />
     <ClInclude Include="SpinLock.h" />
+    <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Type.h" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +201,7 @@
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="SocketUtil.cpp" />
     <ClCompile Include="SpinLock.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

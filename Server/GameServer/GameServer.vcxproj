@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BroadcastManager.cpp" />
+    <ClCompile Include="FSMComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
@@ -160,6 +161,8 @@
     </ClCompile>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="IDGenerator.cpp" />
+    <ClCompile Include="IState.cpp" />
+    <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -191,12 +194,15 @@
   <ItemGroup>
     <ClInclude Include="BroadcastManager.h" />
     <ClInclude Include="FlatBuffer\Protocol_generated.h" />
+    <ClInclude Include="FSMComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="IDGenerator.h" />
+    <ClInclude Include="IState.h" />
+    <ClInclude Include="LogManager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControllerComponent.h" />
@@ -223,8 +229,16 @@
     <None Include="..\PacketTool\protoc-21.12-win64\bin\GenPackets.bat" />
     <None Include="..\PacketTool\protoc-21.12-win64\bin\Protocol.proto" />
     <None Include="..\PacketTool\protoc-21.12-win64\bin\Struct.proto" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets" Condition="Exists('..\..\packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\JsonCpp.Windows.1.9.2\build\JsonCpp.Windows.targets'))" />
+  </Target>
 </Project>

@@ -66,6 +66,8 @@
       <Filter>Job</Filter>
     </ClInclude>
     <ClInclude Include="SpinLock.h" />
+    <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="concurrentqueue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -118,5 +120,6 @@
       <Filter>Job</Filter>
     </ClCompile>
     <ClCompile Include="SpinLock.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
   </ItemGroup>
 </Project>

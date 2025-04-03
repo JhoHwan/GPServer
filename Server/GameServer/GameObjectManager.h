@@ -38,14 +38,14 @@ public:
 
 	void UpdateAll(float deltaTime);
 
-	void AddPlayer(ObjectId id) { _playerIds.push_back(id); }
-	const vector<ObjectId>& GetPlayerIds() const { return _playerIds; }
+	void AddPlayer(weak_ptr<class Player> ref);
+	vector<weak_ptr<class Player>>& GetPlayers();
 
 public:
 	unordered_map<ObjectId, shared_ptr<GameObject>> _gameObjects;
 	vector<ObjectId> _destroyGameObjectsIds;
 
-	vector<ObjectId> _playerIds;
+	vector<weak_ptr<class Player>> _playerRefs;
 };
 
 template<GameObjectType T, typename ...Args>
@@ -53,7 +53,7 @@ inline std::weak_ptr<T> GameObjectManager::Instantiate(Args && ...args)
 {
 	shared_ptr<T> gameObject = make_shared<T>(std::forward<Args>(args)...);
 
-	_gameObjects[gameObject->GetID()] = gameObject;
+	_gameObjects[gameObject->GetId()] = gameObject;
 
 	gameObject->Init();
 

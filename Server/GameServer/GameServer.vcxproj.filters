@@ -53,6 +53,9 @@
       <Filter>Contents\GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="BroadcastManager.cpp" />
+    <ClCompile Include="FSMComponent.cpp" />
+    <ClCompile Include="IState.cpp" />
+    <ClCompile Include="LogManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -109,6 +112,9 @@
       <Filter>Contents\GameObject\Player</Filter>
     </ClInclude>
     <ClInclude Include="BroadcastManager.h" />
+    <ClInclude Include="FSMComponent.h" />
+    <ClInclude Include="IState.h" />
+    <ClInclude Include="LogManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Server">
@@ -155,5 +161,6 @@
     <None Include="..\PacketTool\protoc-21.12-win64\bin\Struct.proto">
       <Filter>Packet\Protobuf\Proto</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -15,3 +15,4 @@ using ObjectId = uint32;
 #include "DoubleJobQueue.h"
 
 #include "GameObjectManager.h"
+#include "LogManager.h"

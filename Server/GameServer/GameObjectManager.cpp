@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "GameObjectManager.h"
+#include "Player.h"
 
 void GameObjectManager::Destroy(GameObjectRef gameObject)
 {
 	if (gameObject.lock() == nullptr) return;
 
-	auto id = gameObject.lock()->GetID();
+	auto id = gameObject.lock()->GetId();
 
 	auto iter = _gameObjects.find(id);
 	if (iter != _gameObjects.end())
@@ -38,3 +39,14 @@ void GameObjectManager::UpdateAll(float deltaTime)
 
 	_destroyGameObjectsIds.clear();
 }
+
+void GameObjectManager::AddPlayer(weak_ptr<Player> ref)
+{
+	_playerRefs.emplace_back(ref);
+}
+
+vector<weak_ptr<class Player>>& GameObjectManager::GetPlayers()
+{
+	return _playerRefs;
+}
+

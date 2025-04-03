@@ -1,5 +1,7 @@
 #pragma once
 
+#include <typeindex>
+
 using GameObjectRef = std::weak_ptr<class GameObject>;
 
 class Component;
@@ -20,7 +22,7 @@ public:
 	void Update(float deltaTime);
 
 public:
-	inline ObjectId GetID() const { return _id; }
+	inline ObjectId GetId() const { return _id; }
 	inline std::shared_ptr<TransformComponent>& Transform() { return _transform; }
 
 	template<ComponentType T>
@@ -35,7 +37,7 @@ private:
 	static class IDGenerator _idGenerator;
 
 	ObjectId _id;
-	std::vector<std::shared_ptr<Component>> _components;
+	std::unordered_map<std::type_index, std::shared_ptr<Component>> _components;
 
 	std::shared_ptr<TransformComponent> _transform;
 
@@ -44,22 +46,18 @@ private:
 template<ComponentType T>
 inline shared_ptr<T> GameObject::GetComponent()
 {
-	for (auto& component : _components)
-	{
-		auto casted = std::dynamic_pointer_cast<T>(component);
-		if (casted != nullptr)
-		{
-			return casted;
-		}
-	}
+	if (_components.find(typeid(T)) == _components.end()) return nullptr;
+	shared_ptr<T> component = static_pointer_cast<T>(_components[typeid(T)]);
 
-	return nullptr;
+	return component;
 }
 
 template<ComponentType T, typename... Args>
 inline shared_ptr<T> GameObject::AddComponent(Args&&... args)
 {
+	if (_components.find(typeid(T)) != _components.end()) return nullptr;
+
 	shared_ptr<T> component = make_shared<T>(shared_from_this(), std::forward<Args>(args)...);
-	_components.push_back(component);
+	_components[typeid(T)] = component;
 	return component;
 }
