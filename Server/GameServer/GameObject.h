@@ -23,7 +23,7 @@ public:
 
 public:
 	inline ObjectId GetId() const { return _id; }
-	inline std::shared_ptr<TransformComponent>& Transform() { return _transform; }
+	inline std::shared_ptr<TransformComponent> Transform() { return _transform; }
 
 	template<ComponentType T>
 	std::shared_ptr<T> GetComponent();

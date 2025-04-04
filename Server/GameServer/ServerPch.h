@@ -15,4 +15,5 @@ using ObjectId = uint32;
 #include "DoubleJobQueue.h"
 
 #include "GameObjectManager.h"
+#include "BroadcastManager.h"
 #include "LogManager.h"

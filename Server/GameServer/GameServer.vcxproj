@@ -152,7 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BroadcastManager.cpp" />
-    <ClCompile Include="FSMComponent.cpp" />
+    <ClCompile Include="FSM.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
@@ -164,7 +164,6 @@
     <ClCompile Include="IState.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControllerComponent.cpp" />
     <ClCompile Include="QuadTree.cpp">
@@ -194,7 +193,7 @@
   <ItemGroup>
     <ClInclude Include="BroadcastManager.h" />
     <ClInclude Include="FlatBuffer\Protocol_generated.h" />
-    <ClInclude Include="FSMComponent.h" />
+    <ClInclude Include="FSM.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameServer.h" />
@@ -203,7 +202,6 @@
     <ClInclude Include="IDGenerator.h" />
     <ClInclude Include="IState.h" />
     <ClInclude Include="LogManager.h" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControllerComponent.h" />
     <ClInclude Include="QuadTree.h" />

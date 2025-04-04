@@ -28,7 +28,6 @@
       <Filter>Packet\Protobuf</Filter>
     </ClCompile>
     <ClCompile Include="ServerPch.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Component.cpp">
       <Filter>Contents\Components</Filter>
     </ClCompile>
@@ -53,7 +52,7 @@
       <Filter>Contents\GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="BroadcastManager.cpp" />
-    <ClCompile Include="FSMComponent.cpp" />
+    <ClCompile Include="FSM.cpp" />
     <ClCompile Include="IState.cpp" />
     <ClCompile Include="LogManager.cpp" />
   </ItemGroup>
@@ -84,7 +83,6 @@
       <Filter>Packet\Protobuf</Filter>
     </ClInclude>
     <ClInclude Include="ServerPch.h" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Component.h">
       <Filter>Contents\Components</Filter>
     </ClInclude>
@@ -112,7 +110,7 @@
       <Filter>Contents\GameObject\Player</Filter>
     </ClInclude>
     <ClInclude Include="BroadcastManager.h" />
-    <ClInclude Include="FSMComponent.h" />
+    <ClInclude Include="FSM.h" />
     <ClInclude Include="IState.h" />
     <ClInclude Include="LogManager.h" />
   </ItemGroup>
