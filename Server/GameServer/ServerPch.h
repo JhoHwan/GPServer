@@ -17,3 +17,4 @@ using ObjectId = uint32;
 #include "GameObjectManager.h"
 #include "BroadcastManager.h"
 #include "LogManager.h"
+#include "AStarManager.h"

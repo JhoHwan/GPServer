@@ -1,7 +1,7 @@
 #pragma once
 #include "FSM.h"
 #include "IState.h"
-
+#include "Protocol.pb.h"
 class Player;
 
 class PlayerControllerComponent : public FSMComponent<Protocol::PLAYER_STATE>
@@ -15,7 +15,9 @@ public:
 	}
 
 public:
-	void MoveTo(const Vector2& goal);
+	void RequestMove(const Vector2& goal);
+	void Stop();
+
 	double GetSpeed() const { return _speed; }
 
 	bool HasPath() const { return !_paths.empty(); }
@@ -26,6 +28,9 @@ public:
 		_paths.pop();
 		return path;
 	}
+
+private:
+	void OnFindPath(std::queue<IntPoint> path);
 
 private:
 	Vector2 _goal;
@@ -58,14 +63,19 @@ public:
 public:
 	void OnEnter(FSMComponent<Protocol::PLAYER_STATE>& fsm) override 
 	{
+		auto gameObject = fsm.GetGameObject().lock();
+		if (gameObject == nullptr) return;
+
 		_controller = static_cast<PlayerControllerComponent*>(&fsm);
 		if (!_controller->HasPath())
 		{
 			fsm.ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE);
 			return;
 		}
-
 		_target = _controller->GetNextPath();
+
+		BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), _target, Protocol::PLAYER_STATE_MOVE);
+
 		_frameCount = 0;
 	}
 
@@ -88,17 +98,12 @@ public:
 
 		position = position + dir * moveDistance;
 
-		//Log << gameObject->GetId() << " Move to " << position << endl;
-
 		if (Vector2::Distance(position, _target) > 0.01f)
 		{
-			BroadcastManager::Instance()->RegisterBroadcastMove(CalculateBroadcastLevel(), gameObject->GetId(), position, Protocol::PLAYER_STATE_MOVE);
 			return;
 		}
 
-
 		position = _target;
-		Log << gameObject->GetId() << " Arrived to " << position << endl;
 
 		if (!_controller->HasPath())
 		{
@@ -109,7 +114,7 @@ public:
 		{
 			_target = _controller->GetNextPath();
 
-			BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), position, Protocol::PLAYER_STATE_MOVE);
+			BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), _target, Protocol::PLAYER_STATE_MOVE);
 		}
 
 	}
@@ -123,24 +128,6 @@ public:
 	}
 
 	Protocol::PLAYER_STATE GetState() override { return Protocol::PLAYER_STATE::PLAYER_STATE_MOVE; }
-
-private:
-	BroadcastLevel CalculateBroadcastLevel()
-	{
-		if (_frameCount  % 30 == 0)
-		{
-			_elapsedTime = 0;
-			return BroadcastLevel::Level2;
-		}
-
-		if (_frameCount % 10 == 0)
-		{
-			_elapsedTime = 0;
-			return BroadcastLevel::Level1;
-		}
-
-		return BroadcastLevel::Level0;
-	}
 
 private:
 	PlayerControllerComponent* _controller;

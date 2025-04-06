@@ -85,9 +85,25 @@ bool Handle_CS_REQUEST_MOVE(SessionRef session, Protocol::CS_REQUEST_MOVE& pkt)
             auto playerRef = GGameObjectManager()->Find(id).lock();
             if (playerRef == nullptr) return;
 
-            playerRef->GetComponent<PlayerControllerComponent>()->MoveTo(pos);
+            playerRef->GetComponent<PlayerControllerComponent>()->RequestMove(pos);
         });
 
     server->InsertJob(job);
+    return true;
+}
+
+bool Handle_CS_REQUEST_STOP(SessionRef session, Protocol::CS_REQUEST_STOP& pkt)
+{
+    shared_ptr<GameServer> server = static_pointer_cast<GameServer>(session->GetServer());
+
+	JobRef job = make_shared<Job>([pkt]()
+		{
+			auto playerRef = GGameObjectManager()->Find(pkt.playerid()).lock();
+			if (playerRef == nullptr) return;
+			playerRef->GetComponent<PlayerControllerComponent>()->Stop();
+		});
+
+    server->InsertJob(job);
+
     return true;
 }

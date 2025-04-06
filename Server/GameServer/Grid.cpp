@@ -1,13 +1,13 @@
-#include "Grid.h"
+#include "pch.h"
 
+#include "Grid.h"
 #include <algorithm>
 #include <cmath>
 #include <queue>
 
 using namespace std;
-using namespace QT;
 
-Grid::Grid(const std::vector<std::vector<int>>& grid) : _map(grid), _quadTree(new QT::QuadTree(grid))
+Grid::Grid(const std::vector<std::vector<int>>& grid) : _map(grid)
 {
 	_height = grid.size();
 	_width = grid.empty() ? 0 : grid[0].size();
@@ -19,9 +19,9 @@ Grid::~Grid()
 {
 }
 
-std::vector<std::pair<int, int>> Grid::FindPath(int startX, int startY, int goalX, int goalY, int entitySize)
+bool Grid::FindPath(int startX, int startY, int goalX, int goalY, int entitySize, OUT std::queue<IntPoint>& outPath) const
 {
-	if (!IsValidPosition(startX, startY, entitySize) || !IsValidPosition(goalX, goalY, entitySize)) return {};
+	if (!IsValidPosition(startX, startY, entitySize) || !IsValidPosition(goalX, goalY, entitySize)) return false;
 
 	vector<vector<Node>> nodes(_height, vector<Node>(_width, Node(0, 0)));
 	for (int i = 0; i < _height; i++)
@@ -96,20 +96,41 @@ std::vector<std::pair<int, int>> Grid::FindPath(int startX, int startY, int goal
 		}
 	}
 
-	vector<pair<int, int>> path;
+	stack<IntPoint> path;
 	if (goalNode)
 	{
 		Node* current = goalNode;
 		while (current)
 		{
-			path.emplace_back(current->x, current->y);
+			path.emplace(current->x, current->y);
 			current = current->parent;
 		}
-		reverse(path.begin(), path.end());
 	}
+	if (path.empty()) return false;
 
-	return path;
+	IntPoint& prev = path.top();
+	path.pop();
+
+	IntPoint lastDir = { 0, 0 }; // 초기 방향 없음
+
+	while (!path.empty())
+	{
+		IntPoint& curr = path.top(); path.pop();
+		IntPoint dir = { curr.first - prev.first, curr.second - prev.second };
+
+		if (dir.first != lastDir.first || dir.second != lastDir.second)
+		{
+			outPath.push(prev); // 방향 바뀌는 시점 추가
+			lastDir = dir;
+		}
+
+		prev = curr;
+	}
+	outPath.push(prev); // 마지막 위치 추가
+
+	return true;
 }
+
 
 void Grid::BuildClearance()
 {
@@ -122,7 +143,7 @@ void Grid::BuildClearance()
 			if (_map[i][j] == 1) continue;
 
 			if (i == _height - 1 || j == _width - 1) _clearanceMap[i][j] = 1;
-			else _clearanceMap[i][j] = min({ _clearanceMap[i + 1][j], _clearanceMap[i][j + 1], _clearanceMap[i + 1][j + 1] }) + 1;
+            else _clearanceMap[i][j] = min(min(_clearanceMap[i + 1][j], _clearanceMap[i][j + 1]), _clearanceMap[i + 1][j + 1]) + 1;
 		}
 	}
 }

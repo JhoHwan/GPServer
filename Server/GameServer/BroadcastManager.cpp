@@ -42,21 +42,14 @@ void BroadcastManager::BroadcastMove(float deltaTime)
 			// TODO : Player Ä³½Ì
 			auto triggeredPlayer = static_pointer_cast<Player>(GGameObjectManager()->Find(info.id).lock());
 
-			if (triggeredPlayer->GetId() == player->GetId())
-			{
-				Protocol::MoveInfo* moveInfo = pkt.add_objects();
-				triggeredPlayer->SetObjectInfo(moveInfo->mutable_objectinfo());
-				moveInfo->set_state(info.state);
-				continue;
-			}
+			if (triggeredPlayer == nullptr) continue;
 
-			auto broadcastLevel = CalculateBroadcastLevel(player->Transform()->Position(), info.position);
-			if (broadcastLevel > info.level) continue;
-		
 			Protocol::MoveInfo* moveInfo = pkt.add_objects();
-			triggeredPlayer->SetObjectInfo(moveInfo->mutable_objectinfo());
+			auto* objInfo = moveInfo->mutable_objectinfo();
+			objInfo->set_objectid(triggeredPlayer->GetId());
+			objInfo->set_x(info.position.x);
+			objInfo->set_y(info.position.y);
 			moveInfo->set_state(info.state);
-	
 		}
 
 		if (pkt.objects_size() == 0) continue;

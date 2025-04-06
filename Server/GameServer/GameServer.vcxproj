@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)Server\ServerLib;$(SolutionDir)Server\Libraries\Protobuf\Include;$(VCInstallDir)Auxiliary\VS\UnitTest\include;$(SolutionDir)Server\Libraries\Flatbuffers;$(IncludePath)</IncludePath>
-    <LibraryPath>$(VCInstallDir)Auxiliary\VS\UnitTest\lib;$(SolutionDir)Server\Libraries\ServerCore\$(Configuration);$(SolutionDir)Server\Libraries\Protobuf\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Server\Libraries\ServerCore\$(Configuration);$(SolutionDir)Server\Libraries\Protobuf\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Server\Build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,13 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AStarManager.cpp" />
     <ClCompile Include="BroadcastManager.cpp" />
     <ClCompile Include="FSM.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="Grid.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="IDGenerator.cpp" />
@@ -189,8 +190,10 @@
     <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="TestFlatbuffer.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AStarManager.h" />
     <ClInclude Include="BroadcastManager.h" />
     <ClInclude Include="FlatBuffer\Protocol_generated.h" />
     <ClInclude Include="FSM.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="..\PacketTool\protoc-21.12-win64\bin\Enum.proto" />

@@ -2,7 +2,7 @@
 
 class GameObject;
 
-class Component
+class Component : public std::enable_shared_from_this<Component>
 {
 protected:
 	Component(std::weak_ptr<GameObject> owner) : _owner(owner) {}

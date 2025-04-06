@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
+#include <stack>
 #include <array>
 #include <set>
 #include <map>

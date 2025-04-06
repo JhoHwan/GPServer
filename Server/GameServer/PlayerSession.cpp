@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "ServerPacketHandler.h"
 #include "PlayerSession.h"
 #include "GameServer.h"
 #include "Player.h"

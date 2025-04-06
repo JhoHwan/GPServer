@@ -19,7 +19,7 @@ public:
 		_states.insert(std::make_pair(state, newState));
 	}
 
-	inline T GetCurrentState() const { return _curState; }
+	inline T GetCurrentState() const { return _curState->GetState(); }
 	void ChangeState(T newState)
 	{
 		if (_curState == nullptr)

@@ -55,6 +55,8 @@
     <ClCompile Include="FSM.cpp" />
     <ClCompile Include="IState.cpp" />
     <ClCompile Include="LogManager.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="AStarManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -113,6 +115,8 @@
     <ClInclude Include="FSM.h" />
     <ClInclude Include="IState.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="AStarManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Server">

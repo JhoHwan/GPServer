@@ -24,7 +24,8 @@ enum : uint16
 	PKT_CS_CHAT = 1006,
 	PKT_SC_CHAT = 1007,
 	PKT_CS_REQUEST_MOVE = 1008,
-	PKT_SC_BROADCAST_MOVE = 1009,
+	PKT_CS_REQUEST_STOP = 1009,
+	PKT_SC_BROADCAST_MOVE = 1010,
 };
 
 // Custom Handlers
@@ -33,6 +34,7 @@ bool Handle_CS_ENTER_GAME(SessionRef session, Protocol::CS_ENTER_GAME& pkt);
 bool Handle_CS_LEAVE_GAME(SessionRef session, Protocol::CS_LEAVE_GAME& pkt);
 bool Handle_CS_CHAT(SessionRef session, Protocol::CS_CHAT& pkt);
 bool Handle_CS_REQUEST_MOVE(SessionRef session, Protocol::CS_REQUEST_MOVE& pkt);
+bool Handle_CS_REQUEST_STOP(SessionRef session, Protocol::CS_REQUEST_STOP& pkt);
 
 class ServerPacketHandler
 {
@@ -45,6 +47,7 @@ public:
 		GPacketHandler[PKT_CS_LEAVE_GAME] = [](SessionRef session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::CS_LEAVE_GAME>(Handle_CS_LEAVE_GAME, session, buffer, len); };
 		GPacketHandler[PKT_CS_CHAT] = [](SessionRef session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::CS_CHAT>(Handle_CS_CHAT, session, buffer, len); };
 		GPacketHandler[PKT_CS_REQUEST_MOVE] = [](SessionRef session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::CS_REQUEST_MOVE>(Handle_CS_REQUEST_MOVE, session, buffer, len); };
+		GPacketHandler[PKT_CS_REQUEST_STOP] = [](SessionRef session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::CS_REQUEST_STOP>(Handle_CS_REQUEST_STOP, session, buffer, len); };
 	}
 
 	static bool HandlePacket(SessionRef session, BYTE* buffer, int32 len)

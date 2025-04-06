@@ -1,47 +1,40 @@
 #pragma once
 
 #include <vector>
-#include "QuadTree.h"
+#include <queue>
 
-
-namespace QT
+constexpr double INF = std::numeric_limits<double>::infinity();
+using IntPoint = std::pair<int32, int32>;
+class Grid
 {
-	constexpr double INF = std::numeric_limits<double>::infinity();
+public:
+	Grid() = default;
+	Grid(const std::vector<std::vector<int>>& grid);
+	~Grid();
 
-	class Grid
-	{
-	public:
-		Grid(const std::vector<std::vector<int>>& grid);
-		~Grid();
+public:
+	struct Node;
 
-		// Getter & Setter
-	public:
-		inline const QT::QuadTree& GetQuadTree() const { return *_quadTree; }
+	bool FindPath(int startX, int startY, int goalX, int goalY, int entitySize, OUT std::queue<IntPoint>& outPath) const;
+	bool IsValidPosition(int x, int y, int entitySize) const;
 
-		// A* Algorithm
-	public:
-		struct Node
-		{
-			int x, y;
-			double g, h, f;
-			Node* parent;
+private:
+	void BuildClearance();
+	static double Heuristic(int x1, int y1, int x2, int y2);
 
-			Node(int x, int y) : x(x), y(y), g(INF), h(0), f(INF), parent(nullptr) {}
-		};
+private:
+	std::vector<std::vector<int>> _map;
+	std::vector<std::vector<int>> _clearanceMap;
 
-		std::vector<std::pair<int, int>> FindPath(int startX, int startY, int endX, int endY, int entitySize);
+	int _width;
+	int _height;
+};
 
-	private:
-		void BuildClearance();
-		bool IsValidPosition(int x, int y, int entitySize) const;
-		static double Heuristic(int x1, int y1, int x2, int y2);
+struct Grid::Node
+{
+	int x, y;
+	double g, h, f;
+	Node* parent;
 
-	private:
-		std::vector<std::vector<int>> _map;
-		std::vector<std::vector<int>> _clearanceMap;
-		QT::QuadTree* _quadTree;
-
-		int _width;
-		int _height;
-	};
-}
+	Node(int x, int y) : x(x), y(y), g(INF), h(0), f(INF), parent(nullptr) {}
+};
