@@ -19,7 +19,7 @@ public:
 	void FindPathAsync(const Vector2& start, const Vector2& goal, int entitySize, std::function<void(std::queue<IntPoint>)> callBack) const
 	{
 		if (!IsValidPos(start) || !IsValidPos(goal)) return;
-		AStarManager::Instance()->FindPath(*_grid, WorldPosToGridPos(start), WorldPosToGridPos(goal), entitySize, callBack);
+		AStarManager::Instance()->FindPathAsync(*_grid, WorldPosToGridPos(start), WorldPosToGridPos(goal), entitySize, callBack);
 	}
 
 	bool IsValidPos(const Vector2& pos) const

@@ -4,9 +4,9 @@
 
 enum BroadcastLevel
 {
-	Level0 = 0, // 매 프레임 (자기 자신 + 근거리)
-	Level1, // 0.1초 (Level0 + 중거리)
-	Level2, // 0.5초 (Level1 + 이외)
+	Level0 = 0, // 자기 자신 + 근거리
+	Level1, // Level0 + 중거리
+	Level2, // Level1 + 원거리
 	ALL, // 모든 클라이언트
 	None,
 };
@@ -29,10 +29,11 @@ private:
 public:
 	void RegisterBroadcastMove(BroadcastLevel level, ObjectId id, Vector2 position, Protocol::PLAYER_STATE state);
 
-	void BroadcastAll(float deltaTime);
+	void Broadcast(float deltaTime);
 
 private:
 	void BroadcastMove(float deltaTime);
+
 	BroadcastLevel CalculateBroadcastLevel(const Vector2& pos1, const Vector2& pos2);
 
 private:

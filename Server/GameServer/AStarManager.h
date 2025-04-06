@@ -9,7 +9,9 @@ public:
 	AStarManager() : _pool(ThreadPool(2)) {}
 	~AStarManager() = default;
 
-	void FindPath(const Grid& grid, const IntPoint& start, const IntPoint& goal, int entitySize, std::function<void(std::queue<IntPoint>)> callBack)
+	void FindPathAsync
+	(const Grid& grid, const IntPoint& start, const IntPoint& goal, 
+		int entitySize, std::function<void(std::queue<IntPoint>)> callBack)
 	{
 		_pool.Enqueue([&grid, start, goal, entitySize, callBack]()
 			{

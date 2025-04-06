@@ -1,4 +1,5 @@
 #pragma once
+
 class ThreadPool
 {
 public:
@@ -50,7 +51,8 @@ private:
 				if (tryCount > maxTryCount)
 				{
 					std::unique_lock<std::mutex> lock(_cvMutex);
-					_cv.wait(lock, [this]() { return _queue.size_approx() != 0 || !_running.load(); });
+					_cv.wait(lock, [this]() 
+						{ return _queue.size_approx() != 0 || !_running.load(); });
 					tryCount = 0;
 				}
 				else
@@ -69,6 +71,4 @@ private:
 	std::condition_variable _cv;
 
 	std::atomic<bool> _running;
-
 };
-

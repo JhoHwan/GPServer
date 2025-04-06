@@ -10,24 +10,13 @@ void BroadcastManager::RegisterBroadcastMove(BroadcastLevel level, ObjectId id, 
 	_broadcastInfos.emplace_back(level, id, position, state);
 }
 
-void BroadcastManager::BroadcastAll(float deltaTime)
+void BroadcastManager::Broadcast(float deltaTime)
 {
 	BroadcastMove(deltaTime);
 }
 
 void BroadcastManager::BroadcastMove(float deltaTime)
 {
-	static float startTime = 0;
-	static uint32 sendPacketCount = 0;
-	startTime += deltaTime;
-
-	if (startTime >= 1.0f)
-	{
-		startTime = 0;
-		//Log << "Broadcast Count : " << sendPacketCount << endl;
-		sendPacketCount = 0;
-	}
-
 	if (_broadcastInfos.size() == 0) return;
 
 	for (const auto& playerRef : GGameObjectManager()->GetPlayers())
@@ -44,6 +33,8 @@ void BroadcastManager::BroadcastMove(float deltaTime)
 
 			if (triggeredPlayer == nullptr) continue;
 
+			
+
 			Protocol::MoveInfo* moveInfo = pkt.add_objects();
 			auto* objInfo = moveInfo->mutable_objectinfo();
 			objInfo->set_objectid(triggeredPlayer->GetId());
@@ -59,12 +50,9 @@ void BroadcastManager::BroadcastMove(float deltaTime)
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		session->Send(sendBuffer);
-		sendPacketCount++;
 	}
 
 	_broadcastInfos.clear();
-
-
 }
 
 BroadcastLevel BroadcastManager::CalculateBroadcastLevel(const Vector2& pos1, const Vector2& pos2)

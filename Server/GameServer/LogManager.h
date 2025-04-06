@@ -20,7 +20,6 @@ public:
 			});
 	}
 
-    // 일반 문자열 및 숫자 등 다양한 타입 지원
     template<typename T>
     LogManager& operator<<(const T& value)
     {
@@ -28,12 +27,10 @@ public:
         return *this;
     }
 
-    // std::endl 등의 조작자 지원
     LogManager& operator<<(std::ostream& (*manip)(std::ostream&))
     {
         if (manip == static_cast<std::ostream & (*)(std::ostream&)>(std::endl))
         {
-            // endl이 들어오면 로그 출력
             std::string log = _oss.str();
             _oss.str("");
             _oss.clear();

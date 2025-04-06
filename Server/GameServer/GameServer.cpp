@@ -38,7 +38,7 @@ void GameServer::GameLoop(std::chrono::milliseconds updateInterval)
 
 		::GGameObjectManager()->UpdateAll(deltaTime);
 
-		BroadcastManager::Instance()->BroadcastAll(deltaTime);
+		BroadcastManager::Instance()->Broadcast(deltaTime);
 
 		// Busy Waiting
 		while (Time::now() < nextFrameTime)
