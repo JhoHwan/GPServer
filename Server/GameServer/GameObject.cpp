@@ -34,6 +34,7 @@ void GameObject::SetObjectInfo(OUT Protocol::ObjectInfo* const info)
 {
 	info->set_x(Transform()->Position().x);
 	info->set_y(Transform()->Position().y);
+	info->set_z(Transform()->Position().z);
 	info->set_objectid(GetId());
 }
 

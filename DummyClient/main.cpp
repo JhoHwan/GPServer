@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include <unordered_set>
+#include "DummyClientPacketHandler.h"
+#include "DummySession.h"
 
 class DummyClient : public IOCPCore
 {
@@ -23,9 +25,10 @@ public:
 
     void Connect(const wstring& ip, uint16 port)
 	{
-		shared_ptr<Session> session = make_shared<Session>();
+		shared_ptr<Session> session = make_shared<DummySession>();
 		session->CreateSocket();
 		_sessions.insert(session);
+		RegisterSocket(session->GetSocket());
 
 		_connector->Connect(ip, port, session);
 	}
@@ -40,8 +43,11 @@ private:
 
 int main()
 {
-	DummyClient client;
+	DummyClientPacketHandler::Init();
 
+	DummyClient client;
+	
+	
 	client.Connect(L"127.0.0.1", 7777);
 
 

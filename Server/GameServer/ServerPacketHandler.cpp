@@ -2,7 +2,9 @@
 
 #include "ServerPacketHandler.h"
 #include "Player.h"
+#include "World.h"
 #include "PlayerControllerComponent.h"
+#include "NavgationAgentCompnent.h"
 
 using JobRef = shared_ptr<Job>;
 
@@ -21,20 +23,20 @@ bool Handle_CS_ENTER_GAME(SessionRef session, Protocol::CS_ENTER_GAME& pkt)
         {
             if (session == nullptr) return;
 
-            auto playerRef = GGameObjectManager()->Instantiate<Player>();
-            playerRef.lock()->SetSession(static_pointer_cast<PlayerSession>(session));
+            auto playerRef = GGameObjectManager()->Instantiate<Player>().lock();
+            playerRef->SetSession(static_pointer_cast<PlayerSession>(session));
+            playerRef->Transform()->Position() = World::Instance()->GetSpawnPos();
 
             static_pointer_cast<PlayerSession>(session)->SetPlayerRef(playerRef);
 
             double x, y;
             ObjectId id;
-
             {
                 Protocol::SC_ENTER_GAME pkt;
                 pkt.set_success(true);
 
                 auto info = pkt.mutable_player();
-                playerRef.lock()->SetObjectInfo(info);
+                playerRef->SetObjectInfo(info);
 
                 auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 
@@ -77,7 +79,7 @@ bool Handle_CS_REQUEST_MOVE(SessionRef session, Protocol::CS_REQUEST_MOVE& pkt)
     shared_ptr<GameServer> server = static_pointer_cast<GameServer>(session->GetServer());
 
     auto id = pkt.playerid();
-    Vector2 pos{ pkt.x(), pkt.y() };
+    Vector3 pos{ pkt.x(), pkt.y(), pkt.z()};
 
     shared_ptr<Job> job = make_shared<Job>([session, id, pos]()
         {

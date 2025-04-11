@@ -1,0 +1,19 @@
+syntax = "proto3";
+package Protocol;
+
+import "Enum.proto";
+
+message ObjectInfo
+{
+	uint64 objectId = 1;
+	double x = 2;
+	double y = 3;
+	double z = 4;
+	double rotate = 5;
+}
+
+message MoveInfo
+{
+	ObjectInfo objectInfo = 1;
+	PLAYER_STATE state = 2;
+}

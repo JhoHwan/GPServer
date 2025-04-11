@@ -8,14 +8,14 @@ public:
 	virtual void Update(float deltaTime) override {}
 
 public:
-	Vector2& Position() { return _position; }
+	Vector3& Position() { return _position; }
 
-	double& Rotation() { return _rotation; }
+	YawRotation& Rotation() { return _rotation; }
 
-	Vector2& Scale() { return _scale; }
+	Vector3& Scale() { return _scale; }
 
 private:
-	Vector2 _position;
-	double _rotation;
-	Vector2 _scale;
+	Vector3 _position;
+	YawRotation _rotation;
+	Vector3 _scale;
 };

@@ -1,0 +1,65 @@
+syntax = "proto3";
+package Protocol;
+
+import "Enum.proto";
+import "Struct.proto";
+
+message CS_ENTER_GAME
+{
+
+}
+
+message SC_ENTER_GAME
+{
+	bool success = 1;
+	ObjectInfo player = 2;
+}
+
+message CS_LEAVE_GAME
+{
+
+}
+
+message SC_LEAVE_GAME
+{
+
+}
+
+message SC_SPAWN
+{
+	repeated ObjectInfo players = 1;
+}
+
+message SC_DESPAWN
+{
+	repeated uint64 objectIds = 1;
+}
+
+message CS_CHAT
+{
+	string msg = 1;
+}
+
+message SC_CHAT
+{
+	uint64 playerId = 1;
+	string msg = 2;
+}
+
+message CS_REQUEST_MOVE
+{
+	uint64 playerId = 1;
+	double x = 2;
+	double y = 3;
+	double z = 4;
+}
+
+message CS_REQUEST_STOP
+{
+	uint64 playerId = 1;
+}
+
+message SC_BROADCAST_MOVE
+{
+	repeated MoveInfo objects = 1;
+}

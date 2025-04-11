@@ -57,6 +57,10 @@
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="AStarManager.cpp" />
+    <ClCompile Include="NavMeshReader.cpp" />
+    <ClCompile Include="NavgationAgentCompnent.cpp">
+      <Filter>Contents\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -117,6 +121,10 @@
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="AStarManager.h" />
+    <ClInclude Include="NavMeshReader.h" />
+    <ClInclude Include="NavgationAgentCompnent.h">
+      <Filter>Contents\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Server">
@@ -151,18 +159,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\PacketTool\protoc-21.12-win64\bin\Enum.proto">
-      <Filter>Packet\Protobuf\Proto</Filter>
-    </None>
-    <None Include="..\PacketTool\protoc-21.12-win64\bin\GenPackets.bat">
-      <Filter>Packet\Protobuf\Proto</Filter>
-    </None>
-    <None Include="..\PacketTool\protoc-21.12-win64\bin\Protocol.proto">
-      <Filter>Packet\Protobuf\Proto</Filter>
-    </None>
-    <None Include="..\PacketTool\protoc-21.12-win64\bin\Struct.proto">
-      <Filter>Packet\Protobuf\Proto</Filter>
-    </None>
     <None Include="packages.config" />
+    <None Include="..\PacketTool\protoc-21.12-win64\Tool\Enum.proto">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+    <None Include="..\PacketTool\protoc-21.12-win64\Tool\Protocol.proto">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+    <None Include="..\PacketTool\protoc-21.12-win64\Tool\Struct.proto">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
+    <None Include="..\PacketTool\protoc-21.12-win64\Tool\GenPackets.bat">
+      <Filter>Packet\Protobuf\Proto</Filter>
+    </None>
   </ItemGroup>
 </Project>

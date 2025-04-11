@@ -15,7 +15,8 @@ struct BroadcastInfo
 {
 	BroadcastLevel level = BroadcastLevel::None;
 	ObjectId id = 0;
-	Vector2 position = Vector2::Zero();
+	Vector3 position = Vector3::Zero();
+	YawRotation yaw;
 	Protocol::PLAYER_STATE state = Protocol::PLAYER_STATE::PLAYER_STATE_NONE;
 };
 
@@ -27,7 +28,7 @@ private:
 	BroadcastManager() = default;
 
 public:
-	void RegisterBroadcastMove(BroadcastLevel level, ObjectId id, Vector2 position, Protocol::PLAYER_STATE state);
+	void RegisterBroadcastMove(BroadcastLevel level, ObjectId id, const Vector3& position, const YawRotation& yaw, Protocol::PLAYER_STATE state);
 
 	void Broadcast(float deltaTime);
 

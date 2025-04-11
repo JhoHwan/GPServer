@@ -3,11 +3,12 @@
 #include "Player.h"
 
 
-void BroadcastManager::RegisterBroadcastMove(BroadcastLevel level, ObjectId id, Vector2 position, Protocol::PLAYER_STATE state)
+void BroadcastManager::RegisterBroadcastMove
+(BroadcastLevel level, ObjectId id, const Vector3& position, const YawRotation& yaw, Protocol::PLAYER_STATE state)
 {
 	if (level == BroadcastLevel::None) return;
 
-	_broadcastInfos.emplace_back(level, id, position, state);
+	_broadcastInfos.emplace_back(level, id, position, yaw, state);
 }
 
 void BroadcastManager::Broadcast(float deltaTime)
@@ -33,13 +34,13 @@ void BroadcastManager::BroadcastMove(float deltaTime)
 
 			if (triggeredPlayer == nullptr) continue;
 
-			
-
 			Protocol::MoveInfo* moveInfo = pkt.add_objects();
 			auto* objInfo = moveInfo->mutable_objectinfo();
 			objInfo->set_objectid(triggeredPlayer->GetId());
 			objInfo->set_x(info.position.x);
 			objInfo->set_y(info.position.y);
+			objInfo->set_z(info.position.z);
+			objInfo->set_rotate(info.yaw);
 			moveInfo->set_state(info.state);
 		}
 

@@ -4,7 +4,7 @@
 #include "World.h"
 #include "BroadcastManager.h"
 
-PlayerControllerComponent::PlayerControllerComponent(std::weak_ptr<GameObject> owner) : FSMComponent<Protocol::PLAYER_STATE>(owner), _speed(600)
+PlayerControllerComponent::PlayerControllerComponent(std::weak_ptr<GameObject> owner) : FSMComponent<Protocol::PLAYER_STATE>(owner), _speed(600), _rotateSpeed(360)
 {
 	AddState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE, make_shared<PlayerIdleState>());
 	AddState(Protocol::PLAYER_STATE::PLAYER_STATE_MOVE, make_shared<PlayerMoveState>());
@@ -12,7 +12,7 @@ PlayerControllerComponent::PlayerControllerComponent(std::weak_ptr<GameObject> o
 	ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE);
 }
 
-void PlayerControllerComponent::RequestMove(const Vector2& goal)
+void PlayerControllerComponent::RequestMove(const Vector3& goal)
 {
 	if (GetCurrentState() == Protocol::PLAYER_STATE::PLAYER_STATE_MOVE)
 	{
@@ -24,10 +24,12 @@ void PlayerControllerComponent::RequestMove(const Vector2& goal)
 
 	Log << gameObject->GetId() << " Request Move to " << goal << endl;
 
-	if (Vector2::Distance(goal, Transform()->Position()) <=  0.1f) return;
+    if (Vector3::Distance(goal, Transform()->Position()) <=  0.1f) return;
 
-	World::Instance()->FindPathAsync(Transform()->Position(), goal, 1,
-		bind(&PlayerControllerComponent::OnFindPath, this, placeholders::_1));
+	//World::Instance()->FindPathAsync(Transform()->Position(), goal, 1,
+		//bind(&PlayerControllerComponent::OnFindPath, this, placeholders::_1));
+
+	World::Instance()->FindPathAsync(Transform()->Position(), goal, bind(&PlayerControllerComponent::OnFindPath, this, placeholders::_1));
 
 }
 
@@ -44,17 +46,16 @@ void PlayerControllerComponent::Stop()
 	ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE);
 }
 
-void PlayerControllerComponent::OnFindPath(std::queue<IntPoint> path)
+void PlayerControllerComponent::OnFindPath(std::queue<Vector3> path)
 {
 	auto controller = static_pointer_cast<PlayerControllerComponent>(shared_from_this());
 	if (controller == nullptr) return;
 	while (!path.empty())
 	{
-		IntPoint gridPos = path.front();
+		Vector3 pos = path.front();
 		path.pop();
-		Vector2 worldPos = World::GridPosToWorldPos(gridPos);
 
-		controller->_paths.push(worldPos);
+		controller->_paths.push(pos);
 	}
 
 	controller->ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_MOVE);
@@ -75,9 +76,15 @@ void PlayerMoveState::OnEnter(FSMComponent<Protocol::PLAYER_STATE>& fsm)
 		fsm.ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE);
 		return;
 	}
-	_target = _controller->GetNextPath();
+	_targetPosition = _controller->GetNextPath();
 
-	BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), _target, Protocol::PLAYER_STATE_MOVE);
+	Vector3& position = gameObject->Transform()->Position();
+	YawRotation& yaw = gameObject->Transform()->Rotation();
+
+	Vector3 newDir = _targetPosition - position;
+	yaw = YawRotation::GetYawFromDirection(newDir);
+
+	BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), _targetPosition, yaw, Protocol::PLAYER_STATE_MOVE);
 
 	_frameCount = 0;
 }
@@ -87,39 +94,36 @@ void PlayerMoveState::Update(FSMComponent<Protocol::PLAYER_STATE>& fsm, float de
 	auto gameObject = fsm.GetGameObject().lock();
 	if (gameObject == nullptr) return;
 
-	_elapsedTime += deltaTime;
-	_frameCount++;
-
-	_controller = static_cast<PlayerControllerComponent*>(&fsm);
 	double speed = _controller->GetSpeed();
 
-	Vector2& position = gameObject->Transform()->Position();
-	Vector2 dir = (_target - position).Normalize();
+	Vector3& position = gameObject->Transform()->Position();
+	YawRotation& yaw = gameObject->Transform()->Rotation();
+
+	if (Vector3::Distance(position, _targetPosition) <= 1)
+	{
+		position = _targetPosition;
+
+		if (!_controller->HasPath())
+		{
+			fsm.ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE);
+			return;
+		}
+
+		_targetPosition = _controller->GetNextPath();
+
+		Vector3 newDir = _targetPosition - position;
+		yaw = YawRotation::GetYawFromDirection(newDir);
+
+		BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), _targetPosition, yaw, Protocol::PLAYER_STATE_MOVE);
+	}
+
+	Vector3 targetDirection = (_targetPosition - position).Normalize();
 
 	float moveDistance = speed * deltaTime;
-	moveDistance = min(moveDistance, Vector2::Distance(position, _target));
+	moveDistance = min(moveDistance, Vector3::Distance(position, _targetPosition));
 
-	position = position + dir * moveDistance;
-
-	if (Vector2::Distance(position, _target) > 0.01f)
-	{
-		return;
-	}
-
-	position = _target;
-
-	if (!_controller->HasPath())
-	{
-		fsm.ChangeState(Protocol::PLAYER_STATE::PLAYER_STATE_IDLE);
-		return;
-	}
-	else
-	{
-		_target = _controller->GetNextPath();
-
-		BroadcastManager::Instance()->RegisterBroadcastMove(BroadcastLevel::ALL, gameObject->GetId(), _target, Protocol::PLAYER_STATE_MOVE);
-	}
-
+	position = position + targetDirection * moveDistance;
+	World::Instance()->GetNavMesh().GetHeightOnNavMesh(position);
 }
 
 void PlayerMoveState::OnExit(FSMComponent<Protocol::PLAYER_STATE>& fsm)
@@ -128,6 +132,7 @@ void PlayerMoveState::OnExit(FSMComponent<Protocol::PLAYER_STATE>& fsm)
 	if (gameObject == nullptr) return;
 
 	BroadcastManager::Instance()->RegisterBroadcastMove
-		(BroadcastLevel::ALL, gameObject->GetId(), fsm.Transform()->Position(), Protocol::PLAYER_STATE_IDLE);
-}
+		(BroadcastLevel::ALL, gameObject->GetId(), fsm.Transform()->Position(), fsm.Transform()->Rotation(), Protocol::PLAYER_STATE_IDLE);
 
+	Log << fsm.Transform()->Position() << endl;
+}

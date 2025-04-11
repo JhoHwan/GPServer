@@ -2,6 +2,7 @@
 
 #include "GameServer.h"
 #include "BroadcastManager.h"
+#include "World.h"
 
 using Time = std::chrono::high_resolution_clock;
 
@@ -35,6 +36,8 @@ void GameServer::GameLoop(std::chrono::milliseconds updateInterval)
 		auto nextFrameTime = Time::now() + updateInterval;
 
 		_jobQueue->ExecuteJob();
+
+		World::Instance()->Update(deltaTime);
 
 		::GGameObjectManager()->UpdateAll(deltaTime);
 

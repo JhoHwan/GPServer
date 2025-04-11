@@ -3,29 +3,19 @@
 #include <stack>
 #include "Grid.h"
 
-class AStarManager : public Singleton<AStarManager>
+class NavMeshField;
+
+class Pathfinder : public Singleton<Pathfinder>
 {
 public:
-	AStarManager() : _pool(ThreadPool(2)) {}
-	~AStarManager() = default;
+	Pathfinder() : _pool(ThreadPool(2)) {}
+	~Pathfinder() = default;
 
 	void FindPathAsync
-	(const Grid& grid, const IntPoint& start, const IntPoint& goal, 
-		int entitySize, std::function<void(std::queue<IntPoint>)> callBack)
-	{
-		_pool.Enqueue([&grid, start, goal, entitySize, callBack]()
-			{
-				std::queue<std::pair<int, int>> path;
-				bool result = grid.FindPath(start.first, start.second, goal.first, goal.second, entitySize, path);
-				if (!result)
-				{
-					Log << "Path not found" << endl;
-					return;
-				}
+	(const Grid& grid, const IntPoint& start, const IntPoint& goal,
+		int entitySize, std::function<void(std::queue<IntPoint>)> callBack);
 
-				callBack(path);
-			});
-	}
+	void FindPathAsync(const NavMeshField& navMesh, const Vector3& startPos, const Vector3& goalPos, std::function<void(std::queue<Vector3>)> callBack);
 
 private:
 	ThreadPool _pool;

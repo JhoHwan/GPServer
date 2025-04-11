@@ -15,29 +15,30 @@ public:
 	}
 
 public:
-	void RequestMove(const Vector2& goal);
+	void RequestMove(const Vector3& goal);
 	void Stop();
 
 	double GetSpeed() const { return _speed; }
+	double GetRotateSpeed() const { return _rotateSpeed; }
 
 	bool HasPath() const { return !_paths.empty(); }
-	Vector2 GetNextPath()
+	Vector3 GetNextPath()
 	{
-		if (_paths.empty()) return Vector2::Zero();
-		Vector2 path = _paths.front();
+		if (_paths.empty()) return Vector3::Zero();
+		Vector3 path = _paths.front();
 		_paths.pop();
 		return path;
 	}
 
 private:
-	void OnFindPath(std::queue<IntPoint> path);
+	void OnFindPath(std::queue<Vector3> path);
 
 private:
-	Vector2 _goal;
-	std::queue<Vector2> _paths;
+	Vector3 _goal;
+	std::queue<Vector3> _paths;
 
 	double _speed;
-
+	double _rotateSpeed;
 };
 
 class PlayerIdleState : public IState<Protocol::PLAYER_STATE>
@@ -53,12 +54,13 @@ public:
 
 	Protocol::PLAYER_STATE GetState() override 
 	{ return Protocol::PLAYER_STATE::PLAYER_STATE_IDLE; }
+
 };
 
 class PlayerMoveState : public IState<Protocol::PLAYER_STATE>
 {
 public:
-	PlayerMoveState() : _target(Vector2::Zero()), _controller(nullptr) {}
+	PlayerMoveState() : _targetPosition(Vector3::Zero()), _controller(nullptr) {}
 	~PlayerMoveState() {}
 
 public:
@@ -69,10 +71,10 @@ public:
 	void OnExit(FSMComponent<Protocol::PLAYER_STATE>& fsm) override;
 
 	Protocol::PLAYER_STATE GetState() override { return Protocol::PLAYER_STATE::PLAYER_STATE_MOVE; }
-
+	
 private:
 	PlayerControllerComponent* _controller;
-	Vector2 _target;
+	Vector3 _targetPosition;
 	float _elapsedTime = 0;
 
 	uint32 _frameCount = 0;

@@ -1,6 +1,10 @@
 #pragma once
 
 #pragma comment(lib, "ServerLib.lib")
+
+#pragma comment(lib, "Detour.lib")
+#pragma comment(lib, "DetourCrowd.lib")
+
 using ObjectId = uint32;
 
 #include "Vector2.h"

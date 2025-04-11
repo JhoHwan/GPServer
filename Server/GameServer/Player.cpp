@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 #include "PlayerControllerComponent.h"
+#include "NavgationAgentCompnent.h"
 
 Player::Player() : GameObject()
 {
@@ -18,6 +19,3 @@ void Player::Init()
 
 	GGameObjectManager()->AddPlayer(static_pointer_cast<Player>(shared_from_this()));
 }
-
-
-

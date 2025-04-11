@@ -19,7 +19,7 @@ public:
 
 	// GameObject 생성
 	template<GameObjectType T, typename... Args>
-	std::weak_ptr<T> Instantiate(Vector2 pos, Args&&... args);
+	std::weak_ptr<T> Instantiate(Vector3 pos, Args&&... args);
 
 	// GameObject 삭제
 	void Destroy(GameObjectRef gameObject);
@@ -61,7 +61,7 @@ inline std::weak_ptr<T> GameObjectManager::Instantiate(Args && ...args)
 }
 
 template<GameObjectType T, typename ...Args>
-inline std::weak_ptr<T> GameObjectManager::Instantiate(Vector2 pos, Args && ...args)
+inline std::weak_ptr<T> GameObjectManager::Instantiate(Vector3 pos, Args && ...args)
 {
 	shared_ptr<GameObject> gameObject = GameObjectManager::Instantiate(std::forward<Args>()...).lock();
 	

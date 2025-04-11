@@ -1,0 +1,9 @@
+syntax = "proto3";
+package Protocol;
+
+enum PLAYER_STATE
+{
+	PLAYER_STATE_NONE = 0;
+	PLAYER_STATE_IDLE = 1;
+	PLAYER_STATE_MOVE = 2;
+}
